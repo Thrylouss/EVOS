@@ -1,0 +1,21 @@
+{% extends 'EvosApp/layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block style-back %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+    <h2>username: shohruh</h2>
+    <h2>password: Sh2004Sh</h2>
+    <form class="form-login" action="" method="post">
+        {% csrf_token %}
+        <div>{{ form }}</div>
+        <button>Login</button>
+        <a class="form-a" href="{% url 'signUp' %}">Register</a>
+    </form>
+{% endblock %}
