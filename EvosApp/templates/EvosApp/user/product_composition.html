@@ -1,0 +1,26 @@
+{% extends 'EvosApp/layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+	Product Composition
+{% endblock %}
+
+{% block content %}
+    {% include 'EvosApp/includes/headers_user.html' %}
+
+    <div class="product-composition">
+        {% for meal in meals %}
+            <div class="product-info">
+                <div class="product-info-img">
+                    <img src="{{ meal.image.url }}" alt="">
+                </div>
+                <div>
+                    <h2>{{ meal.name }}</h2>
+                    <p>{{ meal.description }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% include 'EvosApp/includes/footer_user.html' %}
+{% endblock %}

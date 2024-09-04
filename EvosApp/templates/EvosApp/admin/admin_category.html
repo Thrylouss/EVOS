@@ -1,0 +1,27 @@
+{% extends 'EvosApp/layouts/base.html' %}
+{% load static %}
+
+{% block style-back %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}
+
+{% block title %}
+    Category Page
+{% endblock %}
+
+{% block content %}
+    {% include 'EvosApp/includes/headers_admin.html' %}
+
+    <a class="add-cat" href="{% url 'add-category' %}">Add Category</a>
+
+    <div class="category-info">
+        {% for category in categories %}
+{#            <a class="category-info-a" href="{% url 'category-details' cat_id=category.id %}">#}
+            <a class="category-info-a" href="">
+                <h2>{{ category.name }}</h2>
+            </a>
+{#            <a class="delete" href="{% url 'delete-category' cat_id=category.id %}">&#10006;</a>#}
+            <a class="delete" href="{% url 'delete-category' cat_id=category.id %}">&#10006;</a>
+        {% endfor %}
+    </div>
+{% endblock %}

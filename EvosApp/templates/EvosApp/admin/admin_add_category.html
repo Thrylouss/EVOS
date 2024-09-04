@@ -1,0 +1,22 @@
+{% extends 'EvosApp/layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+	Add Category
+{% endblock %}
+
+{% block style-back %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+	<div class="add-new-cat">
+        <form action="" method="post">
+            {% csrf_token %}
+            <h1>Name</h1>
+            <p>{{ form.name }}</p>
+            <button>Save</button>
+            <button onclick="window.history.back()">Back</button>
+        </form>
+    </div>
+{% endblock %}

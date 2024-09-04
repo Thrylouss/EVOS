@@ -1,0 +1,21 @@
+{% load static %}
+
+<header>
+    <nav class="nav">
+        <div class="nav-wrapper">
+            <a class="nav-img" href="{% url 'main' %}"><img src="{% static 'img/logoEvos.jpg' %}" alt="logo"></a>
+            <a href="{% url 'main' %}">Main</a>
+            <a href="{% url 'branches' %}">Branches</a>
+            <a href="{% url 'vacancies' %}">Vacancies</a>
+            <a href="{% url 'news' %}">News</a>
+            <a href="{% url 'about-us' %}">About us</a>
+            <a href="{% url 'contacts' %}">Contacts</a>
+        </div>
+        <div class="nav-right-content">
+            <a href=""><i class='bx bxs-location-plus'></i> Select your... <i class='bx bx-chevron-down' ></i></a>
+            <a href="" class="basket-link"><i class='bx bxs-basket' ></i> Basket</a>
+            <a class="lang-select" href=""><img src="{% static 'img/eng-flag.jpg' %}" alt=""> <i class='bx bx-chevron-down' ></i></a>
+            <a href=""><i class='bx bxs-user' ></i></a>
+        </div>
+    </nav>
+</header>

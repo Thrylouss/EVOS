@@ -1,0 +1,11 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+<header class="nav-content">
+    <a href="{% url 'categories' %}">Category</a>
+    <a href="{% url 'foods' %}">Meal</a>
+    <a href="{% url 'user-orders' %}">User</a>
+</header>
+
+<a class="logout" href="{% url 'logout' %}">Log Out</a>

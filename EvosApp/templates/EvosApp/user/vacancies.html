@@ -1,0 +1,37 @@
+{% extends 'EvosApp/layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+	Vacancies
+{% endblock %}
+
+{% block content %}
+    {% include 'EvosApp/includes/headers_user.html' %}
+
+    <div class="main-vacancy">
+        <div class="vacancy-header">
+            <h1>Vacancies:</h1>
+            <p>Xodimlarimizga yaratib berayotgan sharoitimiz tufayli bugungi kunda kompaniyamiz
+                O‘zbekistondagi talaba va yoshlar uchun eng yirik ish beruvchilardan biri ekanligidan
+                haqli ravishda faxrlanamiz.</p>
+        </div>
+        <div class="vacancy-items">
+            {% for vac in vacancies %}
+                <div class="vacancy-item">
+                    <h1>{{ vac.name }}</h1>
+                    <ul class="list-vacancy">
+                        {% for req in vac.requirements.all %}
+                            <li>{{ req.name }}</li>
+                        {% endfor %}
+                    </ul>
+                    <div class="vacancy-btn">
+                        <a href="{% url 'vacancy-detail' vac.id %}">View more</a>
+                        <a href="{% url 'add-employee' vacancy_id=vac.id %}">Apply</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% include 'EvosApp/includes/footer_user.html' %}
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'EvosApp/layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+    Branches
+{% endblock %}
+
+{% block content %}
+    {% include 'EvosApp/includes/headers_user.html' %}
+
+    <div class="branches">
+        <div class="branches-item">
+            <div class="branches-info">
+                <h1>Branches</h1>
+                <div class="branches-buttons">
+                    <button class="branches-btn view">List View</button>
+                    <button class="branches-btn map">On Map</button>
+                </div>
+            </div>
+            <div class="list-branches">
+                {% for branch in branchess %}
+                    <a style="text-decoration: none" href="{% url 'branch-info' branch.id %}">
+                        <div class="bran">
+                            <img src="{{ branch.img.url }}" alt="">
+                            <div>
+                                <h1>{{ branch.name }}</h1>
+                                <p>{{ branch.address }}</p>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+
+            </div>
+            <div id="map" style="display: none"></div>
+        </div>
+    </div>
+
+    {% include 'EvosApp/includes/footer_user.html' %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=0146ab7c-622d-434d-bd33-4b38a2da728b&lang=ru_RU" type="text/javascript"></script>
+	<script>
+
+        const viewBtn = document.querySelector('.view');
+        const mapBtn = document.querySelector('.map');
+        const list = document.querySelector('.list-branches');
+        const map = document.querySelector('#map');
+
+        viewBtn.addEventListener('click', () => {
+            list.style.display = 'flex';
+            map.style.display = 'none';
+        })
+        mapBtn.addEventListener('click', () => {
+            list.style.display = 'none';
+            map.style.display = 'block';
+        })
+
+        ymaps.ready(init);
+
+        function init() {
+            const myMap = new ymaps.Map('map', {
+                center: [41.311194, 69.279774],
+                zoom: 12
+            });
+
+            const branches = {{ branches|safe }};
+            branches.forEach(branch => {
+                const placMark = new ymaps.Placemark(
+                    [branch.latitude, branch.longitude],
+                    {
+                        balloonContentHeader: branch.name,
+                        balloonContentBody: branch.address
+                    },
+                    {
+                        iconLayout: 'default#image',
+                        iconImageHref: '{% static 'img/location.png' %}',
+                        iconImageSize: [30, 35],
+                        iconImageOffset: [-25, -50]
+                    }
+                );
+
+                myMap.geoObjects.add(placMark);
+            })
+
+            }
+    </script>
+{% endblock %}

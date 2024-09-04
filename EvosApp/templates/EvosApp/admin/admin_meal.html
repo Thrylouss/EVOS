@@ -1,0 +1,32 @@
+{% extends 'EvosApp/layouts/base.html' %}
+{% load static %}
+
+{% block style-back %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}
+
+{% block title %}
+    Food Page
+{% endblock %}
+
+{% block content %}
+    {% include 'EvosApp/includes/headers_admin.html' %}
+
+{#    <a class="add-cat" href="{% url 'add-food' %}">Add Food</a>#}
+    <a class="add-cat" href="{% url 'add-food' %}">Add Food</a>
+
+    <div style="display: flex; width: 100%; flex-wrap: wrap; justify-content: space-around">
+        {% for food in foods %}
+            <div class="food-el" style="width: 30%; border: 2px solid black; padding: 1%; margin: 1%; background-color: #32724e; color: white">
+{#                <a style="text-decoration: none; color: black" href="{% url 'food-detail' food_id=food.id %}">#}
+                <a style="text-decoration: none; color: white; " href="">
+                    <img style="width: 100%; height: 400px" src="{{ food.image.url }}" alt="">
+                    <h2 style="text-align: center">{{ food.name }}</h2>
+                    <span style="margin-top: 5%; float: left">{{ food.category }}</span>
+                    <span style="margin-top: 5%; float: right">{{ food.price }}</span>
+                </a>
+                <a class="delete-btn" href="{% url 'delete-food' food_id=food.id %}">&#10006;</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

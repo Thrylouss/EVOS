@@ -1,0 +1,22 @@
+{% extends 'EvosApp/layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+    Add Vacancy
+{% endblock %}
+
+{% block content %}
+    {% include 'EvosApp/includes/headers_user.html' %}
+	<div class="main-vacancy">
+        <div class="add-employee">
+            <h1>Send an application</h1>
+            <br>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+    {% include 'EvosApp/includes/footer_user.html' %}
+{% endblock %}

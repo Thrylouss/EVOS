@@ -1,0 +1,59 @@
+{% extends 'EvosApp/layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+    Branches-Info
+{% endblock %}
+
+{% block content %}
+    {% include 'EvosApp/includes/headers_user.html' %}
+
+    <div style="background-color: #e5e5e5; padding: 50px 0">
+    <div class="branch-container">
+        <h1>{{ branch.name }}</h1>
+        <div class="main-branch">
+            <div class="branch-info">
+                <div class="branch-address">
+                    <h2>Address:</h2>
+                    <p>{{ branch.address }}</p>
+                </div>
+                <div class="branch-address">
+                    <h2>Working hours:</h2>
+                    <p>9:00 - 03:00</p>
+                </div>
+                <div id="mapBranch">
+
+                </div>
+            </div>
+            <div>
+                <img style="width: 100%; height: 600px; margin-bottom: 48px;  border: 5px solid #32724e;" src="{{ branch.img.url }}" alt="">
+            </div>
+        </div>
+    </div>
+    </div>
+
+    {% include 'EvosApp/includes/footer_user.html' %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=0146ab7c-622d-434d-bd33-4b38a2da728b&lang=ru_RU" type="text/javascript"></script>
+    <script>
+
+        ymaps.ready(init);
+
+        function init() {
+            const myMap = new ymaps.Map('mapBranch', {
+                center: [{{ branch.latitude }}, {{ branch.longitude }}],
+                zoom: 20
+            });
+
+            const myPlacemark = new ymaps.Placemark([{{ branch.latitude }}, {{ branch.longitude }}], {}, {
+                iconLayout: 'default#image',
+                iconImageHref: '{% static 'img/location.png' %}',
+                iconImageSize: [50, 50],
+                iconImageOffset: [-25, -50]
+            });
+            myMap.geoObjects.add(myPlacemark);
+        }
+    </script>
+{% endblock %}

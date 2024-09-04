@@ -1,0 +1,35 @@
+{% extends 'EvosApp/layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+    News
+{% endblock %}
+
+{% block content %}
+    {% include 'EvosApp/includes/headers_user.html' %}
+
+	<div style="background-color: #e5e5e5; padding: 50px 0">
+    <div class="news-container">
+        <h1>News: </h1>
+        <div class="news-info">
+            <a class="news-main" href="{% url 'news-detailed-view' newses.id %}"><img src="{{ newses.image.url }}" class="main-news" alt=""></a>
+            <div class="news-items">
+                {% for news in newsesMini %}
+                <div class="news-item">
+                    <a href="{% url 'news-detailed-view' news.id %}">
+                        <div style="background: url('{{ news.image.url }}'); background-size: cover;">
+                            <div class="subtext">
+                                <h2>{{ news.title }}</h2>
+                                <p>{{ news.content }}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+    </div>
+
+    {% include 'EvosApp/includes/footer_user.html' %}
+{% endblock %}

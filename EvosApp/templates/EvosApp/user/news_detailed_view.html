@@ -1,0 +1,25 @@
+{% extends 'EvosApp/layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+	News Detail View
+{% endblock %}
+
+{% block content %}
+    {% include 'EvosApp/includes/headers_user.html' %}
+
+    <div class="main-vacancy">
+        <div class="news-detail">
+            <img src="{{ newses.image.url }}" alt="">
+            <div>
+                <h1>{{ newses.title }}</h1>
+                <p>{{ newses.content }}</p>
+            </div>
+        </div>
+        <div class="vacancy-btns">
+            <a href="{% url 'news' %}">Back to news</a>
+        </div>
+    </div>
+
+    {% include 'EvosApp/includes/footer_user.html' %}
+{% endblock %}

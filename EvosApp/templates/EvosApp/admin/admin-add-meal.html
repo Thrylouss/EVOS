@@ -1,0 +1,20 @@
+\{% extends 'EvosApp/layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+	Add Category
+{% endblock %}
+
+{% block style-back %}
+{% endblock %}
+
+{% block content %}
+	<div class="add-new-meal">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>{{ form }}</p>
+            <button>Save</button>
+            <button onclick="window.history.back()">Back</button>
+        </form>
+    </div>
+{% endblock %}

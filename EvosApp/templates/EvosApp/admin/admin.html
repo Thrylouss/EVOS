@@ -1,0 +1,15 @@
+{% extends 'EvosApp/layouts/base.html' %}
+{% load static %}
+
+{% block style-back %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}
+
+{% block title %}
+	Admin Panel
+{% endblock %}
+
+{% block content %}
+    {% include 'EvosApp/includes/headers_admin.html' %}
+	<h2 style="font-size: 150px; text-align: center">Admin Gay</h2>
+{% endblock %}

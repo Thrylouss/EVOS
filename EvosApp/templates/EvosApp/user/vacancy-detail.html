@@ -1,0 +1,29 @@
+{% extends 'EvosApp/layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+	Vacancy Detail
+{% endblock %}
+
+{% block content %}
+    {% include 'EvosApp/includes/headers_user.html' %}
+
+	<div class="main-vacancy">
+        <div class="vacancy-header">
+            <h1>{{ vacancy.name }}</h1>
+        </div>
+        <div class="vacancy-detail">
+            <h2>Description</h2>
+            <p>{{ vacancy.description }}</p>
+            <br>
+            <h2>Contact Information</h2>
+            <p>{{ vacancy.contact_info }}</p>
+        </div>
+        <div class="vacancy-btns">
+            <a href="javascript:history.back()">Back</a>
+            <a href="{% url 'add-employee' vacancy_id=vacancy.id %}">Apply</a>
+        </div>
+    </div>
+
+    {% include 'EvosApp/includes/footer_user.html' %}
+{% endblock %}

@@ -1,0 +1,413 @@
+{% extends 'EvosApp/layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+	Main Page
+{% endblock %}
+
+{% block content %}
+    {% include 'EvosApp/includes/headers_user.html' %}
+    <div class="form-basket">
+        <div>
+            <div class="something-items">
+
+            </div>
+            <div class="total-something">
+                <div class="total-something-items">
+                    <h2>Total price:</h2>
+                    <p class="total-price">0</p>
+                </div>
+                <a id="makeOrder" href="">
+                    Order
+                </a>
+            </div>
+        </div>
+
+        <div class="nothing">
+            <img src="{% static 'img/basket.jpg' %}" alt="">
+            <p>Oops, nothing is found!
+Your basket is empty, open «Menu»
+and choose favorite product.</p>
+        </div>
+    </div>
+    <div class="overlay">
+
+    </div>
+
+    <main>
+        <div class="container">
+            <button class="prevButton"><i class='bx bx-left-arrow-alt' ></i></button>
+            <div class="slider">
+                {% for news in newses %}
+                    <div class="slide {% if forloop.first %} active{% endif %} ">
+                        <div class="slider-left">
+                            <h1>{{ news.title }}</h1>
+                            <img src="{% static 'img/food.png' %}" alt="">
+                            <p>{{ news.content }}</p>
+                            <div class="main-buttons">
+                                <a href="#section1">Our Menu</a>
+                                <a href="{% url 'product-info' %}">Product Composition</a>
+                                <a target="_blank" href="https://app.evos.uz/">App Evos</a>
+                                <a href="">For Partners</a>
+                            </div>
+                        </div>
+                        <div class="slider-right">
+                            <a href="{% url 'news-detailed-view' news.id %}"><img src="{{ news.image.url }}" alt="">  </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+                <button class="nextButton"><i class='bx bx-right-arrow-alt' ></i></button>
+        </div>
+        <div class="category">
+            {% for category in categories %}
+            	<a href="#section{{ forloop.counter }}" class="cat-a">{{ category.name }}</a>
+            {% endfor %}
+            <a href="" class="basket"><i class='bx bxs-basket' ></i> Basket</a>
+        </div>
+        <div class="category-items">
+            {% for category in categories %}
+                {% if category.get_meal.exists %}
+                	<div class="category-item">
+                    <h1 class="sections" id="section{{ forloop.counter }}">{{ category.name }}</h1>
+                        <div class="meal">
+                            {% for food in category.get_meal.all %}
+                                <div class="meal-item"
+                                     data-id="{{ food.id }}"
+                                     data-img="{{ food.image.url }}"
+                                     data-name="{{ food.name }}"
+                                     data-price="{{ food.price }}">
+                                    <div class="buy-animation" style="display: none"><img src="{{ food.image.url }}" alt=""></div>
+                                    <img src="{{ food.image.url }}" alt="">
+                                    <h2>{{ food.name }}</h2>
+                                    <p>{{ food.price }}</p>
+                                    <a id="add-to-basket" href="">Add to basket</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+            <div class="why-we">
+                <h1>Why we?</h1>
+                <div class="why-we-items">
+                    <div style="border-bottom: 1px solid #32724e;">
+                        <i class='bx bx-shield-alt-2 icon-green'></i>
+                        <h2>Food inspection</h2>
+                        <p>Safety and pleasure of food for our guests - our main task. We have introduced HACCP - a set of production rules that guarantee quality and consumer-friendly products. The kitchen and halls are automated.</p>
+                    </div>
+                    <div style="border-bottom: 1px solid #32724e; border-right: 1px solid #32724e; border-left: 1px solid #32724e">
+                        <i class='bx bx-current-location icon-green' ></i>
+                        <h2>Always nearby</h2>
+                        <p>71 restaurants throughout the Republic of Uzbekistan.
+                            Which EVOS restaurant is near your home or office?
+                            Location of each restaurant is <a href="">here</a>
+                        </p>
+                    </div>
+                    <div style="border-bottom: 1px solid #32724e">
+                        <i class='bx bx-group icon-green' ></i>
+                        <h2>Eastern hospitality</h2>
+                        <p>
+                            The secret of our delicious dishes?
+                            Everything is very simple.
+                            We cook for you as for our loved ones, with care and warmth!
+                        </p>
+                    </div>
+                    <div>
+                        <i class='bx bx-fast-forward icon-green' ></i>
+                        <h2>Quickly, deliciously, naturally</h2>
+                        <p>Fast serving of your favorite dishes made entirely from natural products</p>
+                    </div>
+                    <div style="border-left: 1px solid #32724e; border-right: 1px solid #32724e">
+                        <i class='bx bx-food-menu icon-green' ></i>
+                        <h2>Varied menu</h2>
+                        <p>
+                            We are convinced that every customer of the restaurant will find
+                            favorite dishes for every taste on the menu and certainly will forget about hunger!
+                        </p>
+                    </div>
+                    <div>
+                        <i class='bx bx-time icon-green' ></i>
+                        <h2>Fast delivery</h2>
+                        <p>Average delivery time in Tashkent does not exceed 15-20 minutes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <form action="">
+    {% csrf_token %}
+    </form>
+
+{% include 'EvosApp/includes/footer_user.html' %}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            function orderMake() {
+                let basketData = JSON.parse(localStorage.getItem('basket')) || [];
+                const csrftoken = document.querySelector('[name="csrfmiddlewaretoken"]')
+                console.log(csrftoken)
+                fetch('submit-order/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken.value
+                    },
+                    body: JSON.stringify({
+                        'data': basketData
+                    })
+                }).then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Thank you for your order!')
+                            localStorage.removeItem('basket')
+                        }
+                        else {
+                            alert('Something went wrong!')
+                        }
+                    })
+            }
+
+            const makeOrder = document.querySelector('#makeOrder');
+
+            makeOrder.addEventListener('click', (e) => {
+                e.preventDefault();
+                orderMake();
+            })
+
+
+            const basketData = JSON.parse(localStorage.getItem('basket')) || [];
+            const something = document.querySelector('.something-items');
+            const nothing = document.querySelector('.nothing');
+            const totalPrice = document.querySelector('.total-price');
+
+            if (basketData.length > 0) {
+                something.style.display = 'flex';
+                nothing.style.display = 'none';
+
+                basketData.forEach(item => {
+                    something.innerHTML += showBasket(item);
+                })
+
+                totalPrice.innerHTML = basketData.reduce((acc, item) => acc + item.price * item.quantity, 0)
+
+            } else {
+                something.style.display = 'none';
+                nothing.style.display = 'flex';
+            }
+
+            function showBasket(data) {
+                return `
+                    <div class="something" data-id="${data.id}">
+                        <a class="delete-meal" href=""><i class="bx bx-trash"></i></a>
+                        <img src="${data.image}" alt="" class="item-image">
+                        <p class="item-name">${data.name}</p>
+                        <div class="add-quantity">
+                            <p class="item-price" style="color: #32724e">${data.price * data.quantity}</p>
+                            <div class="add-quantity-items" data-id="${data.id}">
+                                <button class="decrease">-</button>
+                                <p class="quantity">${data.quantity}</p>
+                                <button class="increase">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+
+            const decrease = document.querySelectorAll('.decrease');
+            const increase = document.querySelectorAll('.increase');
+            const number = document.querySelectorAll('.quantity');
+
+            decrease.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const elementData = e.target.closest('.add-quantity-items').getAttribute('data-id');
+                    const elementQuantity = e.target.closest('.add-quantity-items').querySelector('.quantity');
+                    const elementPrice = e.target.closest('.add-quantity').querySelector('.item-price');
+                    const something = e.target.closest('.something');
+                    const totalPrice = document.querySelector('.total-price');
+
+                    basketData.forEach(item => {
+                        if (item.id === elementData) {
+                            if (item.quantity > 1) {
+                                item.quantity -= 1
+                                elementQuantity.textContent = item.quantity
+                                elementPrice.textContent = item.price * item.quantity
+                                localStorage.setItem('basket', JSON.stringify(basketData))
+                                totalPrice.innerHTML = basketData.reduce((acc, item) => acc + item.price * item.quantity, 0)
+                            } else {
+                                something.remove();
+                                basketData.splice(basketData.indexOf(item), 1)
+                                localStorage.setItem('basket', JSON.stringify(basketData))
+                                totalPrice.innerHTML = basketData.reduce((acc, item) => acc + item.price * item.quantity, 0)
+                            }
+                        }
+                    })
+
+                })
+            })
+
+            increase.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const elementData = e.target.closest('.add-quantity-items').getAttribute('data-id');
+                    const elementQuantity = e.target.closest('.add-quantity-items').querySelector('.quantity');
+                    const elementPrice = e.target.closest('.add-quantity').querySelector('.item-price');
+
+                    basketData.forEach(item => {
+                        if (item.id === elementData) {
+                            item.quantity += 1
+                            elementQuantity.textContent = item.quantity
+                            elementPrice.textContent = item.price * item.quantity
+                            localStorage.setItem('basket', JSON.stringify(basketData))
+                            totalPrice.innerHTML = basketData.reduce((acc, item) => acc + item.price * item.quantity, 0)
+                        }
+                    })
+                })
+            })
+
+            const deleteBtn = document.querySelectorAll('.delete-meal');
+
+            deleteBtn.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault()
+                    const mealItem = e.target.closest('.something');
+                    if (mealItem) {
+                        const id = mealItem.getAttribute('data-id');
+                        basketData.forEach(item => {
+                            if (item.id === id) {
+                                basketData.splice(basketData.indexOf(item), 1)
+                                localStorage.setItem('basket', JSON.stringify(basketData))
+                                totalPrice.innerHTML = basketData.reduce((acc, item) => acc + item.price * item.quantity, 0)
+                                mealItem.remove()
+                            }
+                        })
+                    }
+                })
+            })
+
+            const addToBasket = document.querySelectorAll('#add-to-basket');
+
+            addToBasket.forEach(item => {
+                item.addEventListener('click', (e)=> {
+                    e.preventDefault()
+                    const mealAnim = e.target.closest('.meal-item').children[0];
+
+                    mealAnim.style.display = 'flex';
+
+                    setTimeout(() => {
+                        mealAnim.style.display = 'none';
+                    }, 700)
+
+                    const mealItem = e.target.closest('.meal-item');
+                    if (mealItem) {
+                        const name = mealItem.getAttribute('data-name');
+                        const price = mealItem.getAttribute('data-price');
+                        const img = mealItem.getAttribute('data-img');
+                        const id = mealItem.getAttribute('data-id');
+
+                        const meal = {
+                            id: id,
+                            name: name,
+                            price: price,
+                            image: img,
+                        }
+
+                        let basket = JSON.parse(localStorage.getItem('basket')) || [];
+                        const existMeal = basket.findIndex(item => item.id === meal.id);
+                        if (existMeal >= 0) {
+                            basket[existMeal].quantity += 1
+                        }
+                        else {
+                            meal.quantity = 1
+                            basket.push(meal)
+                        }
+                        localStorage.setItem('basket', JSON.stringify(basket))
+                    }
+                })
+            })
+
+
+            const basket = document.querySelector('.basket-link');
+            const basketForm = document.querySelector('.basket');
+            const form = document.querySelector('.form-basket');
+            const overlay = document.querySelector('.overlay');
+
+            basketForm.addEventListener('click', (e) => {
+                e.preventDefault()
+                const form = document.querySelector('.form-basket');
+                overlay.classList.add('active-over')
+                form.style.transform = 'translateX(0)';
+            })
+            basket.addEventListener('click', (e) => {
+                e.preventDefault()
+                const form = document.querySelector('.form-basket');
+                overlay.classList.add('active-over')
+                form.style.transform = 'translateX(0)';
+            })
+
+            overlay.addEventListener('click', ()=> {
+                const form = document.querySelector('.form-basket');
+                form.style.transform = 'translateX(100%)';
+                overlay.classList.remove('active-over')
+            })
+
+            const categories = document.querySelectorAll('.category .cat-a');
+
+            categories.forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    categories.forEach(a => a.classList.remove('active-cat'));
+                    this.classList.add('active-cat');
+
+                    const element = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(element);
+
+                    const offset = 170
+                    const elementPosition = targetElement.getBoundingClientRect().top
+                    const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    })
+                })
+            })
+
+            window.onscroll = function () {stickyCategory()}
+
+            const category = document.querySelector('.category');
+            const sticky = category.offsetTop;
+
+            function stickyCategory() {
+                if (window.pageYOffset >= sticky) {
+                    category.classList.add('fixed')
+                } else {
+                    category.classList.remove('fixed')
+                }
+            }
+
+            const slides = document.querySelectorAll('.slide');
+            const nextButton = document.querySelector('.nextButton');
+            const prevButton = document.querySelector('.prevButton');
+            let currentIndex = 0;
+
+            function showSlide(index){
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === index)
+                })
+            }
+
+            prevButton.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + slides.length) % slides.length
+                showSlide(currentIndex)
+            })
+            nextButton.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % slides.length
+                showSlide(currentIndex)
+            })
+        })
+    </script>
+{% endblock %}

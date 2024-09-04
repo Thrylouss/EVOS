@@ -1,0 +1,57 @@
+{% extends 'EvosApp/layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+	About us
+{% endblock %}
+
+{% block content %}
+    {% include 'EvosApp/includes/headers_user.html' %}
+    <div class="about-main">
+        <div class="about-banner">
+        </div>
+        <div class="about">
+            <h1>About Us</h1>
+            <p>Did you know that the very first branch of the company was opened back in 2006 and has been successfully
+                operating to this day? For 15 years, the company has grown from a small eatery at a bus stop into a modern,
+                expanded network, which today includes more than 65 restaurants throughout Uzbekistan, its own fastest
+                delivery service, a modern, deployed IT infrastructure, and more than 2,000 employees.</p>
+        </div>
+        <div class="extra">
+            <div class="extra-info">
+                <i class='bx bx-line-chart'></i>
+                <div>
+                    <h1>15</h1>
+                    <p>years of great history</p>
+                </div>
+            </div>
+            <div class="extra-info">
+                <i class='bx bx-current-location' ></i>
+                <div>
+                    <h1>71</h1>
+                    <p>restaurants throughout Uzbekistan</p>
+                </div>
+            </div>
+            <div class="extra-info">
+                <i class='bx bx-group' ></i>
+                <div>
+                    <h1>3 000 +</h1>
+                    <p>employees</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-about">
+            {% for about in abouts %}
+            	<div>
+                    <img src="{{ about.image.url }}" alt="">
+                    <h1>{{ about.title }}</h1>
+                    <p>{{ about.content }}</p>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+    {% include 'EvosApp/includes/footer_user.html' %}
+{% endblock %}

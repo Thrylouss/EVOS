@@ -1,0 +1,31 @@
+{% extends 'EvosApp/layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+	Admin Panel
+{% endblock %}
+
+{% block content %}
+    {% include 'EvosApp/includes/headers_admin.html' %}
+
+    <table class="my-table">
+        <tr>
+            <th>User</th>
+            <th>Meal</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Created at</th>
+            <th>Action</th>
+        </tr>
+        {% for order in orders %}
+        	<tr>
+                <td>{{ order.order.user_id.username }}</td>
+                <td>{{ order.meal }}</td>
+                <td>{{ order.quantity }}</td>
+                <td>{{ order.get_price }}</td>
+                <td>{{ order.order.created_at }}</td>
+                <td style="width: 10%"><a class="delete-table" href="{% url 'delete-order' order_id=order.order.id %}">&#10006;</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
